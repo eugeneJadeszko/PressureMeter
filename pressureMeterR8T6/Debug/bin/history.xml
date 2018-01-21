@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<history>
+   <processor signature="arm-none-eabi-gcc -mcpu=cortex-m0 -mthumb -g -nostartfiles -Map=pressureMeterR8T6.map -O0 --gc-sections -LC:\CooCox\CoIDE\configuration\ProgramData\pressureMeterR8T6 -TC:\CooCox\CoIDE\configuration\ProgramData\pressureMeterR8T6/arm-gcc-link.ld -g">
+      <target file="pressureMeterR8T6.elf" lastModified="1611ae99960">
+         <source file="..\obj\calc.o" lastModified="1611a4e213d"/>
+         <source file="..\obj\stm32f0xx_rcc.o" lastModified="1611a4e221b"/>
+         <source file="..\obj\timer.o" lastModified="1611a7b2639"/>
+         <source file="..\obj\utility.o" lastModified="1611a4e242b"/>
+         <source file="..\obj\stm32f0xx_adc.o" lastModified="1611a4e2519"/>
+         <source file="..\obj\main.o" lastModified="1611a7c3f97"/>
+         <source file="..\obj\startup_stm32f0xx.o" lastModified="1611a4e2625"/>
+         <source file="..\obj\gpio.o" lastModified="1611a4e26d4"/>
+         <source file="..\obj\display.o" lastModified="1611ae99543"/>
+         <source file="..\obj\hd44780.o" lastModified="1611a763649"/>
+         <source file="..\obj\system_stm32f0xx_temp.o" lastModified="1611a4e293d"/>
+         <source file="..\obj\stm32f0xx_gpio.o" lastModified="1611a4e2a1c"/>
+         <source file="..\obj\adc.o" lastModified="1611a4e2ad1"/>
+         <source file="..\obj\stm32f0xx_tim.o" lastModified="1611a4e2c28"/>
+         <source file="..\obj\status.o" lastModified="1611a4e2cd3"/>
+         <source file="..\obj\buttons.o" lastModified="1611a7c4135"/>
+         <source file="..\obj\stm32f0xx_misc.o" lastModified="1611a4e2e4e"/>
+      </target>
+   </processor>
+</history>
