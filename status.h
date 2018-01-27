@@ -3,7 +3,11 @@
 
 #include "inttypes.h"
 
+void updateStatuses();
 void ShowBatteryStatus();
-void showStatus();
+void showChargeStatus();
+void showPressureStatus();
+void setPressure(uint16_t pressureValue);
+void setCharge(uint8_t chargeValue);
 
 #endif

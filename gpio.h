@@ -13,6 +13,7 @@
 #define LCD_LIGHT_PB9	GPIO_Pin_9
 
 #define ADC_PA1				GPIO_Pin_1
+#define ADC_PA2				GPIO_Pin_2
 #define CHARGE_PB11			GPIO_Pin_11
 #define STDBY_PB10			GPIO_Pin_10
 

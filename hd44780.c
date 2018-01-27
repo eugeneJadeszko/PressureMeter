@@ -44,7 +44,7 @@ void LcdInit(void) {
 }
 
 void LcdLedOn(void) {
-	setLcdBrightness(getLcdBrightness());
+	setBrightness(getLcdBrightness());
 	TIM_Cmd(TIM17, ENABLE);
 }
 
@@ -69,19 +69,16 @@ void LcdCursorMode(cursor_state curState, cursor_mode curMode) {
 	}
 }
 
-//--- ---//
 void LcdSendCommand(uint8_t data) {
 	GPIO_ResetBits(LCD_CONT_PORT, RS);
 	LcdSendByte(data);
 }
 
-//--- ---//
 void LcdSendData(uint8_t data) {
 	GPIO_SetBits(LCD_CONT_PORT, RS);
 	LcdSendByte(data);
 }
 
-//--- ---//
 void LcdSendByte(uint8_t data) {
 	GPIO_SetBits(LCD_CONT_PORT, EN);
 	if (data & 16)
@@ -126,7 +123,7 @@ void LcdSendByte(uint8_t data) {
 	u8_cur_pos++;
 }
 
-//---Нарисовать строку---//
+//---РќР°СЂРёСЃРѕРІР°С‚СЊ СЃС‚СЂРѕРєСѓ---//
 uint8_t LcdDrawString(char* text) {
 	uint8_t size = 0;
 	while (*text) {
@@ -136,7 +133,7 @@ uint8_t LcdDrawString(char* text) {
 	return size;
 }
 
-//---Установка позиции курсора---//
+//---РЈСЃС‚Р°РЅРѕРІРєР° РїРѕР·РёС†РёРё РєСѓСЂСЃРѕСЂР°---//
 void LcdGoToPos(char Row, char Col) {
 	char address;
 	if (Row == 0)
@@ -148,7 +145,7 @@ void LcdGoToPos(char Row, char Col) {
 	u8_cur_pos = address;
 }
 
-//---Очистка диспле¤---//
+//---РћС‡РёСЃС‚РєР° РґРёСЃРїР»РµВ¤---//
 void LcdClear(void) {
 	LcdSendCommand(0x01);
 	delay_ms(2);
@@ -183,13 +180,13 @@ uint8_t itoa(int n, uint8_t* s) {
 	int i, sign;
 	uint8_t c[12];
 
-	if ((sign = n) < 0) // записываем знак
-		n = -n; // делаем n положительным числом
+	if ((sign = n) < 0) // Р·Р°РїРёСЃС‹РІР°РµРј Р·РЅР°Рє
+		n = -n; // РґРµР»Р°РµРј n РїРѕР»РѕР¶РёС‚РµР»СЊРЅС‹Рј С‡РёСЃР»РѕРј
 	i = 0;
-	do { // генерируем цифры в обратном пор¤дке
-		c[i++] = n % 10 + '0'; // берем следующую цифру
+	do { // РіРµРЅРµСЂРёСЂСѓРµРј С†РёС„СЂС‹ РІ РѕР±СЂР°С‚РЅРѕРј РїРѕСЂВ¤РґРєРµ
+		c[i++] = n % 10 + '0'; // Р±РµСЂРµРј СЃР»РµРґСѓСЋС‰СѓСЋ С†РёС„СЂСѓ
 		size++;
-	} while ((n /= 10) > 0); // удал¤ем
+	} while ((n /= 10) > 0); // СѓРґР°Р»В¤РµРј
 	if (sign < 0) {
 		c[i++] = '-';
 		size++;

@@ -10,7 +10,6 @@ void delay_us(uint32_t t)
 	while(i--);
 }
 
-//--- ---//
 void delay_ms(uint32_t t)
 {
 	unsigned long i;
@@ -27,9 +26,9 @@ uint8_t ConvertIntToString(int n, char* s)
      if ((sign = n) < 0)  n = -n;
      do
      {
-         c[i++] = n % 10 + '0';   // ·ÂÂÏ ÒÎÂ‰Û˛˘Û˛ ˆËÙÛ
+         c[i++] = n % 10 + '0';   // –±–µ—Ä–µ–º —Å–ª–µ–¥—É—é—â—É—é —Ü–∏—Ñ—Ä—É
          size++;
-     } while ((n /= 10) > 0);     // Û‰‡ÎˇÂÏ
+     } while ((n /= 10) > 0);     // —É–¥–∞–ª—è–µ–º
      if (sign < 0)
      {
          c[i++] = '-';

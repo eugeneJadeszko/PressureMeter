@@ -6,15 +6,15 @@ uint16_t PrescalerValue = 0;
 uint16_t Channel1Pulse = 0;
 uint8_t lcdBrightness = 50;
 
-TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure; // Конфигурация таймера
-TIM_OCInitTypeDef TIM_OCInitStructure; // Конфигурация выхода таймера
+TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure; // РљРѕРЅС„РёРіСѓСЂР°С†РёСЏ С‚Р°Р№РјРµСЂР°
+TIM_OCInitTypeDef TIM_OCInitStructure; // РљРѕРЅС„РёРіСѓСЂР°С†РёСЏ РІС‹С…РѕРґР° С‚Р°Р№РјРµСЂР°
 NVIC_InitTypeDef NVIC_InitStructure;
 
 void TIM3_Init(void) {
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
-	PrescalerValue = (uint16_t)(SystemCoreClock / 1000) - 1; //Делитель на 1000 Гц
+	PrescalerValue = (uint16_t)(SystemCoreClock / 1000) - 1; //Р”РµР»РёС‚РµР»СЊ РЅР° 1000 Р“С†
 	TIM_TimeBaseStructure.TIM_Prescaler = PrescalerValue;
-	TIM_TimeBaseStructure.TIM_Period = 500; // Прерывание (1000/TIM_Period) Гц
+	TIM_TimeBaseStructure.TIM_Period = 10; // РџСЂРµСЂС‹РІР°РЅРёРµ (1000/TIM_Period) Р“С†
 	TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
 
 	NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQn; //Enable the TIM3 gloabal Interrupt
@@ -22,15 +22,15 @@ void TIM3_Init(void) {
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&NVIC_InitStructure);
 
-	TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE); //разрешаем прерывание от таймера
+	TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE); //СЂР°Р·СЂРµС€Р°РµРј РїСЂРµСЂС‹РІР°РЅРёРµ РѕС‚ С‚Р°Р№РјРµСЂР°
 	TIM_Cmd(TIM3, ENABLE); //TIM3 enable counter
 }
 
 void TIM2_Init(void) {
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
-	PrescalerValue = (uint16_t)(SystemCoreClock / 1000) - 1; //Делитель на 1000 Гц
+	PrescalerValue = (uint16_t)(SystemCoreClock / 1000) - 1; //Р”РµР»РёС‚РµР»СЊ РЅР° 1000 Р“С†
 	TIM_TimeBaseStructure.TIM_Prescaler = PrescalerValue;
-	TIM_TimeBaseStructure.TIM_Period = 10; // Прерывание (1000/TIM_Period) Гц
+	TIM_TimeBaseStructure.TIM_Period = 500; // РџСЂРµСЂС‹РІР°РЅРёРµ (1000/TIM_Period) Р“С†
 	TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
 
 	NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn; //Enable the TIM3 gloabal Interrupt
@@ -38,40 +38,33 @@ void TIM2_Init(void) {
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&NVIC_InitStructure);
 
-	TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE); //разрешаем прерывание от таймера
-	TIM_Cmd(TIM2, ENABLE); //TIM3 enable counter
+	TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE); //СЂР°Р·СЂРµС€Р°РµРј РїСЂРµСЂС‹РІР°РЅРёРµ РѕС‚ С‚Р°Р№РјРµСЂР°
+	TIM_Cmd(TIM2, ENABLE); //TIM2 enable counter
 }
 
 void Tim17_pwm_init(void) {
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM17, ENABLE); //Разрешаем тактирование таймера 17
-	PrescalerValue = (uint16_t)(SystemCoreClock / 1000) - 1; //Делитель на 1000 Гц
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM17, ENABLE); //Р Р°Р·СЂРµС€Р°РµРј С‚Р°РєС‚РёСЂРѕРІР°РЅРёРµ С‚Р°Р№РјРµСЂР° 17
+	PrescalerValue = (uint16_t)(SystemCoreClock / 1000) - 1; //Р”РµР»РёС‚РµР»СЊ РЅР° 1000 Р“С†
 	//	TimerPeriod = (SystemCoreClock / 17570) - 1; //Compute the value to be set in ARR regiter to generate signal frequency at 17.57 Khz
-	TimerPeriod = PrescalerValue * 2; //период переполнения таймера (количество циклов)
+	TimerPeriod = PrescalerValue * 2; //РїРµСЂРёРѕРґ РїРµСЂРµРїРѕР»РЅРµРЅРёСЏ С‚Р°Р№РјРµСЂР° (РєРѕР»РёС‡РµСЃС‚РІРѕ С†РёРєР»РѕРІ)
 	Channel1Pulse = (uint16_t)(
-			((uint32_t) lcdBrightness * (TimerPeriod - 1)) / 100); //Вычисление скважности ШИМ
+			((uint32_t) lcdBrightness * (TimerPeriod - 1)) / 100); //Р’С‹С‡РёСЃР»РµРЅРёРµ СЃРєРІР°Р¶РЅРѕСЃС‚Рё РЁРРњ
 	TIM_TimeBaseStructure.TIM_Prescaler = 0; //PrescalerValue;
-	TIM_TimeBaseStructure.TIM_Period = TimerPeriod; //1000; 			// Прерывание каждое переполнение (TIM_Period)
+	TIM_TimeBaseStructure.TIM_Period = TimerPeriod; //1000; 			// РџСЂРµСЂС‹РІР°РЅРёРµ РєР°Р¶РґРѕРµ РїРµСЂРµРїРѕР»РЅРµРЅРёРµ (TIM_Period)
 	TIM_TimeBaseInit(TIM17, &TIM_TimeBaseStructure);
 
-	/*	NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQn; //Enable the TIM3 gloabal Interrupt
-	 NVIC_InitStructure.NVIC_IRQChannelPriority = 0;
-	 NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-	 NVIC_Init(&NVIC_InitStructure);
-
-	 TIM_ITConfig(TIM14, TIM_IT_Update, ENABLE); //разрешаем прерывание от таймера*/
-
-	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1; //Конфигурируем таймер в режиме ШИМ
+	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1; //РљРѕРЅС„РёРіСѓСЂРёСЂСѓРµРј С‚Р°Р№РјРµСЂ РІ СЂРµР¶РёРјРµ РЁРРњ
 	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
 	TIM_OCInitStructure.TIM_OutputNState = TIM_OutputNState_Enable;
 	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
 	TIM_OCInitStructure.TIM_OCNPolarity = TIM_OCNPolarity_Low;
-	TIM_OCInitStructure.TIM_OCIdleState = TIM_OCIdleState_Set; //dead time тип
+	TIM_OCInitStructure.TIM_OCIdleState = TIM_OCIdleState_Set; //dead time С‚РёРї
 	TIM_OCInitStructure.TIM_OCNIdleState = TIM_OCIdleState_Reset;
 
 	TIM_OCInitStructure.TIM_Pulse = Channel1Pulse;
 	TIM_OC1Init(TIM17, &TIM_OCInitStructure);
 
-	TIM_Cmd(TIM17, ENABLE); //запускаем таймер
+	TIM_Cmd(TIM17, ENABLE); //Р·Р°РїСѓСЃРєР°РµРј С‚Р°Р№РјРµСЂ
 	TIM_CtrlPWMOutputs(TIM17, ENABLE); //TIM17 Main Output Enable
 }
 

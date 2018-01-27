@@ -30,25 +30,18 @@ typedef enum {
 
 void LcdCursorMode(cursor_state curState, cursor_mode curMode);
 
-//--- ---//
 void LcdInit(void);
 
-//--- ---//
 void LcdLedOn(void);
 
-//--- ---//
 void LcdLedOff(void);
 
-//--- ---//
 void LcdSendCommand(uint8_t data);
 
-//--- ---//
 void LcdSendData(uint8_t data);
 
-//--- ---//
 void LcdSendByte(uint8_t data);
 
-//--- ---//
 uint8_t LcdDrawString(char* text);
 
 //---Установка позиции курсора---//
@@ -68,4 +61,4 @@ uint8_t LcdGetCurPos();
 
 uint8_t itoa(int n, uint8_t* s);
 
-#endif // __HD44780_h
+#endif

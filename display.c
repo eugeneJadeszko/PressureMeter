@@ -2,8 +2,6 @@
 #include "hd44780.h"
 #include "buttons.h"
 #include "utility.h"
-#include "gpio.h"
-#include "status.h"
 #include "timer.h"
 
 uint8_t batEmpty[8] = { 14, 17, 17, 17, 17, 17, 17, 31 };
@@ -20,7 +18,7 @@ uint8_t maxThreshold = 6;
 uint8_t minThreshold = 0;
 
 void DisplayInit(void) {
-//	TIM_Cmd(TIM3, DISABLE);
+	TIM_Cmd(TIM2, DISABLE);
 	LcdInit();
 	BatteryIconDraw();
 	LcdGoToPos(0, 2);
@@ -29,7 +27,7 @@ void DisplayInit(void) {
 	LcdGoToPos(1, 1);
 	LcdDrawString("Pressure meter");
 	delay_ms(500);
-//	TIM_Cmd(TIM3, ENABLE);
+	TIM_Cmd(TIM2, ENABLE);
 }
 
 void Display(void) {
@@ -51,6 +49,7 @@ void mainDisplay() {
 }
 
 void menu() {
+	TIM_Cmd(TIM2, DISABLE);
 	uint8_t menuItem = 0;
 	while (menuItem != 4) {
 		if (menuItem > 3) {
@@ -74,6 +73,7 @@ void menu() {
 			break;
 		}
 	}
+	TIM_Cmd(TIM2, ENABLE);
 }
 
 void itemMaxThreshold() {
