@@ -5,6 +5,8 @@
 #include "stm32f0xx_rcc.h"
 #include "stm32f0xx_gpio.h"
 
+GPIO_InitTypeDef GPIO_InitStructure;
+
 #define LED_GREEN_PC9 	GPIO_Pin_9
 #define LED_BLUE_PC8 	GPIO_Pin_8
 #define BUTTON_USER_PA0 GPIO_Pin_0

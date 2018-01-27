@@ -33,11 +33,11 @@ static uint16_t filter_sred(uint16_t adc_val, uint16_t* buf,
 	return (filter_reg->Reg.Filter_sum >> COUNT_RSHIFT);
 }
 
-void calcInit() {
-	for (uint16_t i = 0; i < COUNT_FILTER; i++) {
-		updateValues();
-	}
-}
+//void calcInit() {
+//	for (uint16_t i = 0; i < COUNT_FILTER; i++) {
+//		updateValues();
+//	}
+//}
 
 void updateValues() {
 	updatePressureValue();

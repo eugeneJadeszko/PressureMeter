@@ -15,13 +15,11 @@ uint8_t quit();
 void brightnessControl();
 void dehighLighting(int8_t *step, uint8_t lcdBrightness);
 void highLighting(int8_t *step, uint8_t lcdBrightness);
+
 void setMinThreshold();
 void setMaxThreshold();
-void showInfoDeviceState();
-
 uint8_t getMaxThreshold();
 uint8_t getMinThreshold();
-uint8_t getInfoPressure();
 
 void IconDraw(uint8_t number, uint8_t * char_data);
 void BatteryIconDraw(void);

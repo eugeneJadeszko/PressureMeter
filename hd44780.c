@@ -8,8 +8,6 @@ static uint8_t u8_cur_pos;
 void LcdInit(void) {
 	u8_cur_pos = 0;
 
-	GPIO_InitTypeDef GPIO_InitStructure;
-
 	RCC_AHBPeriphClockCmd(RCC_LCD_DAT_PORT, ENABLE);
 	GPIO_InitStructure.GPIO_Pin = DB4 | DB5 | DB6 | DB7;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
@@ -33,14 +31,6 @@ void LcdInit(void) {
 	delay_ms(200);
 	LcdSendCommand(0x06);
 	LcdSendCommand(0x0C);
-
-	//Led On
-	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
-	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;
-	GPIO_Init(GPIOB, &GPIO_InitStructure);
 }
 
 void LcdLedOn(void) {

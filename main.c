@@ -9,12 +9,12 @@
 
 int main(void) {
 	GPIOInit();
-	Tim17_pwm_init();
-	TIM2_Init();
+	initPWMtimer17();
+	initTimer2();
 	DisplayInit();
 	adcInit();
-	calcInit();
-	TIM3_Init();
+//	calcInit();
+	initTimer3();
 
 	while (1) {
 		Display();

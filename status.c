@@ -2,14 +2,17 @@
 #include "gpio.h"
 #include "hd44780.h"
 #include "utility.h"
+#include "display.h"
 
 uint8_t charge;
 uint16_t pressure;
 uint8_t stat;
+uint8_t currentDeviceState = 0;
 
 void updateStatuses() {
 	showPressureStatus();
 	showChargeStatus();
+	showDeviceStatus();
 }
 
 //void ShowBatteryStatus() {
@@ -78,10 +81,28 @@ void showPressureStatus() {
 	LcdDrawString(" Pa");
 }
 
+void showDeviceStatus() {
+	LcdGoToPos(0, 6);
+	if (currentDeviceState == 1) {
+		LcdDrawString("ON ");
+		return;
+	}
+	LcdDrawString("OFF");
+}
+
 void setPressure(uint16_t pressureValue) {
+	if (pressureValue > getMaxThreshold()) {
+		currentDeviceState = 0;
+	} else if (pressureValue < getMinThreshold()) {
+		currentDeviceState = 1;
+	}
 	pressure = pressureValue;
 }
 
 void setCharge(uint8_t chargeValue) {
 	charge = chargeValue;
+}
+
+void setCurrentDeviceState(uint8_t state) {
+	currentDeviceState = state;
 }
