@@ -13,7 +13,7 @@ uint8_t lastState;
 uint8_t ledState;
 
 /**
- * абстрактный метод обработки нажати¤ кнопки.
+ * абстрактный метод обработки нажатия кнопки.
  */
 uint8_t button(Buttons button) {
 	uint8_t currentState;
