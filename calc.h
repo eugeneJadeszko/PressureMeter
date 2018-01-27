@@ -6,20 +6,18 @@
 #define COUNT_FILTER    512
 #define COUNT_RSHIFT    9
 
-typedef union
-{
-   uint32_t Val;
-   struct
-   {
-        uint32_t Flag:1;       //флаг заполнения суммы
-        uint32_t Index;       //хранение индекса буфера
-        uint32_t Filter_sum; //регистр суммы для усреднения
-    }Reg;
+typedef union {
+	uint32_t Val;
+	struct {
+		uint32_t Flag :1; //С„Р»Р°Рі Р·Р°РїРѕР»РЅРµРЅРёСЏ СЃСѓРјРјС‹
+		uint32_t Index; //С…СЂР°РЅРµРЅРёРµ РёРЅРґРµРєСЃР° Р±СѓС„РµСЂР°
+		uint32_t Filter_sum; //СЂРµРіРёСЃС‚СЂ СЃСѓРјРјС‹ РґР»СЏ СѓСЃСЂРµРґРЅРµРЅРёСЏ
+	} Reg;
 } FILTER_REG;
 
-void CalcInit();
-void CalcUpdate();
-void CalcSendData();
-uint8_t CalcGetCharge();
+void calcInit();
+void updateValues();
+void updatePressureValue();
+void updateChargeValue();
 
 #endif

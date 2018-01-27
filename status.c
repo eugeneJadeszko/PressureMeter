@@ -1,11 +1,19 @@
 #include "status.h"
 #include "gpio.h"
 #include "hd44780.h"
-#include "calc.h"
 #include "utility.h"
+#include "display.h"
 
-extern uint8_t charge;
+uint8_t charge;
+uint16_t pressure;
 uint8_t stat;
+uint8_t currentDeviceState = 0;
+
+void updateStatuses() {
+	showPressureStatus();
+	showChargeStatus();
+	showDeviceStatus();
+}
 
 //void ShowBatteryStatus() {
 //	uint8_t stdby, chargeStat;
@@ -38,33 +46,63 @@ uint8_t stat;
 //	}
 //}
 //
-//void showStatus() {
-//	CalcUpdate();
-//	LcdGoToPos(0, 8);
-//	LcdFillSpace(12);
-//	LcdGoToPos(0, 15);
-//	LcdConvertIntDisplay(charge);
-//	LcdSendData('%');
-//	if (charge >= 95) {
-//		LcdGoToPos(0, 19);
-//		LcdSendData(6);
-//	} else if ((charge < 95) && (charge >= 70)) {
-//		LcdGoToPos(0, 19);
-//		LcdSendData(5);
-//	} else if ((charge < 70) && (charge >= 50)) {
-//		LcdGoToPos(0, 19);
-//		LcdSendData(4);
-//	} else if ((charge < 50) && (charge >= 30)) {
-//		LcdGoToPos(0, 19);
-//		LcdSendData(3);
-//	} else if ((charge < 30) && (charge >= 10)) {
-//		LcdGoToPos(0, 19);
-//		LcdSendData(2);
-//	} else if ((charge < 10) && (charge >= 5)) {
-//		LcdGoToPos(0, 19);
-//		LcdSendData(1);
-//	} else if (charge < 5) {
-//		LcdGoToPos(0, 19);
-//		LcdSendData(0);
-//	}
-//}
+void showChargeStatus() {
+	LcdGoToPos(0, 11);
+	if (charge < 100) {
+		LcdSendData(' ');
+	}
+	if (charge < 10) {
+		LcdSendData(' ');
+	}
+	LcdConvertIntDisplay(charge);
+	LcdSendData('%');
+	if (charge >= 95) {
+		LcdSendData(6);
+	} else if ((charge < 95) && (charge >= 70)) {
+		LcdSendData(5);
+	} else if ((charge < 70) && (charge >= 50)) {
+		LcdSendData(4);
+	} else if ((charge < 50) && (charge >= 30)) {
+		LcdSendData(3);
+	} else if ((charge < 30) && (charge >= 10)) {
+		LcdSendData(2);
+	} else if ((charge < 10) && (charge >= 5)) {
+		LcdSendData(1);
+	} else if (charge < 5) {
+		LcdSendData(0);
+	}
+}
+
+void showPressureStatus() {
+	LcdGoToPos(1, 10);
+	LcdFillSpace(6);
+	LcdGoToPos(1, 10);
+	LcdConvertIntDisplay(pressure);
+	LcdDrawString(" Pa");
+}
+
+void showDeviceStatus() {
+	LcdGoToPos(0, 6);
+	if (currentDeviceState == 1) {
+		LcdDrawString("ON ");
+		return;
+	}
+	LcdDrawString("OFF");
+}
+
+void setPressure(uint16_t pressureValue) {
+	if (pressureValue > getMaxThreshold()) {
+		currentDeviceState = 0;
+	} else if (pressureValue < getMinThreshold()) {
+		currentDeviceState = 1;
+	}
+	pressure = pressureValue;
+}
+
+void setCharge(uint8_t chargeValue) {
+	charge = chargeValue;
+}
+
+void setCurrentDeviceState(uint8_t state) {
+	currentDeviceState = state;
+}

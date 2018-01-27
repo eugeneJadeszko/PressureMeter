@@ -9,29 +9,29 @@
 
 int main(void) {
 	GPIOInit();
-	Tim17_pwm_init();
-	TIM2_Init();
+	initPWMtimer17();
+	initTimer2();
 	DisplayInit();
-//	AdcInit();
-//	CalcInit();
-//	TIM3_Init();
+	adcInit();
+//	calcInit();
+	initTimer3();
 
 	while (1) {
 		Display();
 	}
 }
 
-//void TIM3_IRQHandler(void) {
-//	if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET) {
-//		TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
-//		GPIOC->ODR ^= LED_GREEN_PC9; //toggling
-//		ShowBatteryStatus();
-//	}
-//}
+void TIM3_IRQHandler(void) {
+	if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET) {
+		TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
+		updateValues();
+		buttonUser();
+	}
+}
 
 void TIM2_IRQHandler(void) {
 	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET) {
 		TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
-		buttonUser();
+		updateStatuses();
 	}
 }

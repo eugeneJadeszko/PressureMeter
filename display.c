@@ -2,8 +2,6 @@
 #include "hd44780.h"
 #include "buttons.h"
 #include "utility.h"
-#include "gpio.h"
-#include "status.h"
 #include "timer.h"
 
 uint8_t batEmpty[8] = { 14, 17, 17, 17, 17, 17, 17, 31 };
@@ -13,14 +11,11 @@ uint8_t bat50[8] = { 14, 17, 17, 17, 31, 31, 31, 31 };
 uint8_t bat70[8] = { 14, 17, 17, 31, 31, 31, 31, 31 };
 uint8_t bat95[8] = { 14, 17, 31, 31, 31, 31, 31, 31 };
 uint8_t batFull[8] = { 14, 31, 31, 31, 31, 31, 31, 31 };
-
-uint8_t currentDeviceState = 1;
-uint8_t currentPressure = 0;
 uint8_t maxThreshold = 6;
 uint8_t minThreshold = 0;
 
 void DisplayInit(void) {
-//	TIM_Cmd(TIM3, DISABLE);
+	TIM_Cmd(TIM2, DISABLE);
 	LcdInit();
 	BatteryIconDraw();
 	LcdGoToPos(0, 2);
@@ -29,7 +24,7 @@ void DisplayInit(void) {
 	LcdGoToPos(1, 1);
 	LcdDrawString("Pressure meter");
 	delay_ms(500);
-//	TIM_Cmd(TIM3, ENABLE);
+	TIM_Cmd(TIM2, ENABLE);
 }
 
 void Display(void) {
@@ -44,13 +39,12 @@ void Display(void) {
 void mainDisplay() {
 	LcdGoToPos(0, 0);
 	LcdDrawString("State: ");
-	showInfoDeviceState();
 	LcdGoToPos(1, 0);
 	LcdDrawString("Pressure: ");
-	LcdConvertIntDisplay(getInfoPressure());
 }
 
 void menu() {
+	TIM_Cmd(TIM2, DISABLE);
 	uint8_t menuItem = 0;
 	while (menuItem != 4) {
 		if (menuItem > 3) {
@@ -74,6 +68,7 @@ void menu() {
 			break;
 		}
 	}
+	TIM_Cmd(TIM2, ENABLE);
 }
 
 void itemMaxThreshold() {
@@ -287,25 +282,12 @@ void setMaxThreshold() {
 	}
 }
 
-void showInfoDeviceState() {
-	if (currentDeviceState == 1) {
-		LcdDrawString("ON ");
-		delay_ms(6);
-		return;
-	}
-	LcdDrawString("OFF");
-}
-
 uint8_t getMaxThreshold() {
 	return maxThreshold;
 }
 
 uint8_t getMinThreshold() {
 	return minThreshold;
-}
-
-uint8_t getInfoPressure() {
-	return currentPressure;
 }
 
 void IconDraw(uint8_t number, uint8_t * char_data) {
